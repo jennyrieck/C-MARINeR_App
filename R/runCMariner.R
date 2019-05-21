@@ -1,4 +1,4 @@
-runCMariner = function(array, design = NULL,...){
+runCMariner = function(array = NULL, design = NULL,...){
 
   .GlobalEnv$.marinerApp$array = array
   .GlobalEnv$.marinerApp$design = design
