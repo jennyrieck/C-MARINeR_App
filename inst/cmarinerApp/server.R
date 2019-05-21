@@ -5,6 +5,9 @@ shinyServer(function(input, output, session) {
     analysisResults()
   })
 
+  callModule(screeModule, id ='scree', analysisResults = analysisResults)
+
+
   plotOptions = callModule(plotOptionsModule, id = 'plotOptions')
 
 })

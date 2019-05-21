@@ -5,6 +5,7 @@ shinyUI(fluidPage(
              analysisUI('analysis'),
              plotOptionsUI('plotOptions')
            )),
-    column(8)
+    column(8,
+           screeUI('scree'))
   )
 ))
