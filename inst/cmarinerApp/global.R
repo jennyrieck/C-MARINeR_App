@@ -3,7 +3,5 @@ library(covstatis)
 library(magrittr)
 library(GSVD)
 
-source('modules/inputModule.R')
-source('modules/analysisModule.R')
-source('modules/plotOptionsModule.R')
-source('modules/screeModule.R')
+moduleFiles = list.files('modules',full.names = TRUE) %>% sapply(source,.GlobalEnv)
+
