@@ -1,3 +1,9 @@
 shinyUI(fluidPage(
-
+  fluidRow(
+    column(4,
+           wellPanel(
+             plotOptionsUI('plotOptions')
+           )),
+    column(8)
+  )
 ))
