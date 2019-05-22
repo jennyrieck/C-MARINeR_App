@@ -1,3 +1,4 @@
+#' @export
 runCMariner = function(array = NULL, design = NULL,...){
 
   # this is the only way that I know to pass arguments into a shiny app.
