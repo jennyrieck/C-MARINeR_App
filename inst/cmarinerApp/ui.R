@@ -3,9 +3,10 @@ shinyUI(fluidPage(
     column(4,
            wellPanel(
              analysisUI('analysis'),
-             plotOptionsUI('plotOptions')
+             plotOptionsUI('plotOptions'),
+             screeUI('scree')
            )),
     column(8,
-           screeUI('scree'))
+           compromiseFactorMapUI('compromiseFactorMap'))
   )
 ))

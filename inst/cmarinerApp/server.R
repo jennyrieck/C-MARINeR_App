@@ -6,6 +6,7 @@ shinyServer(function(input, output, session) {
   })
 
   callModule(screeModule, id ='scree', analysisResults = analysisResults)
+  callModule(compromiseFactorMapModule, id = 'compromiseFactorMap', analysisResults = analysisResults)
 
 
   plotOptions = callModule(plotOptionsModule, id = 'plotOptions')
