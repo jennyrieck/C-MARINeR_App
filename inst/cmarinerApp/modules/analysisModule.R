@@ -2,7 +2,7 @@ analysisModule = function(input,output,session,data){
   analysisResults = eventReactive(input$run_analysis,{
     print('i analyze')
     array = data()$array
-    covstatis(cov_matrices=array,table_norm_type=input$norm_type)
+    covstatis(cov_matrices=array,matrix_norm_type=input$norm_type)
   })
 
   return(analysisResults)
