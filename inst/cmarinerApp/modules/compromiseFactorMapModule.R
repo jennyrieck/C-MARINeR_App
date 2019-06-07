@@ -10,9 +10,9 @@ compromiseFactorMapModule = function(input,output,session,analysisResults){
     clickEvent = plotly::event_data("plotly_click", source = session$ns('covstatis_click'))
 
     plot_covstatis_plotly(fi = analysisResults()$compromise_component_scores,
-                   fis =  simplify2array(analysisResults()$partial_component_scores),
-                   clickEvent = clickEvent,
-                   source = session$ns('covstatis_click'))
+                          fis =  simplify2array(analysisResults()$partial_component_scores),
+                          clickEvent = clickEvent,
+                          source = session$ns('covstatis_click'))
   })
 
 }
@@ -20,7 +20,7 @@ compromiseFactorMapModule = function(input,output,session,analysisResults){
 
 # a ggplot can be readily converted into a plotly plot
 plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,2), clickEvent = NULL,#, display.fi.names=T,display.fis.names=F
-                             source = 'A'){
+                                 source = 'A'){
   centerPoints =   fi[,axes]
   centerPoints = as.data.frame(centerPoints)
   colnames(centerPoints) = c('x','y')
@@ -65,13 +65,13 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
   if(!is.null(clickEvent)){
 
     # the curve number is determined by the layer order.
-    # in my code below, the centerPoints curve is curve 0
+    # in my code below, the centerPoints curve is curve 2
     # the line segments are curve 1
-    # the peripheral points are curve 2
+    # the peripheral points are curve 0
     # only curves 0 and 2 are clickable
     # plotly is javascript based so indexes start from 0
     # line transparency does not work with plotly. that's why it's transparency is always constant
-    if(clickEvent[,'curveNumber'] == 0){
+    if(clickEvent[,'curveNumber'] == 2){
       centerPoints$selected = 0.3
       peripheralPoints$selected = 0.3
       connectingLines$selected = 0.3
@@ -86,7 +86,7 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
       # connectingLines$selected[connectingLines$property == highlightProperty] = 1
 
 
-    } else if(clickEvent[,'curveNumber'] == 2){
+    } else if(clickEvent[,'curveNumber'] == 0){
       centerPoints$selected = 0.3 # set a low default transparency
       peripheralPoints$selected = 0.3
       connectingLines$selected = 0.3
@@ -103,9 +103,9 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
 
 
   p = ggplot(data = NULL, aes(x = x, y = y, text = paste(property,indivs,sep = '\n'))) +
-    geom_point(data = centerPoints, color = centerPoints$color, alpha = centerPoints$selected) +
-    geom_segment(data = connectingLines, aes(x = x, y = y ,yend = yend, xend = xend),linetype = 4,alpha = connectingLines$selected) +
     geom_point(data = peripheralPoints,color = peripheralPoints$color,alpha = peripheralPoints$selected) +
+    geom_segment(data = connectingLines, aes(x = x, y = y ,yend = yend, xend = xend),linetype = 4,alpha = connectingLines$selected) +
+    geom_point(data = centerPoints, color = centerPoints$color, alpha = centerPoints$selected, size=2) +
     cowplot::theme_cowplot() +
     geom_hline(yintercept = 0,linetype = 5) +
     geom_vline(xintercept = 0, linetype = 5) + theme(axis.line = element_blank())
