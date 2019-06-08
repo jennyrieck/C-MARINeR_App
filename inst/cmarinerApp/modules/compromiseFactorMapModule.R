@@ -53,6 +53,7 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
 
   peripheralPoints$indivs = indivs
 
+
   connectingLines = data.frame(x = peripheralPoints$x,
                                y = peripheralPoints$y,
                                xend = centerPoints$x[match(peripheralPoints$property,centerPoints$property)],
@@ -71,7 +72,15 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
     # only curves 0 and 2 are clickable
     # plotly is javascript based so indexes start from 0
     # line transparency does not work with plotly. that's why it's transparency is always constant
-    if(clickEvent[,'curveNumber'] == 2){
+    if(clickEvent[,'curveNumber'] == 0){
+      centerPoints$selected = 0.3 # set a low default transparency
+      peripheralPoints$selected = 0.3
+      connectingLines$selected = 0.3
+      highlightIndiv = peripheralPoints[clickEvent[,'pointNumber']+1,]$indivs
+      peripheralPoints$selected[peripheralPoints$indivs == highlightIndiv] = 1
+      peripheralPoints$color[peripheralPoints$indivs == highlightIndiv] = 'firebrick4'
+
+    } else if(clickEvent[,'curveNumber'] == 2){
       centerPoints$selected = 0.3
       peripheralPoints$selected = 0.3
       connectingLines$selected = 0.3
@@ -84,17 +93,7 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
       peripheralPoints$color[peripheralPoints$property == highlightProperty] = 'firebrick4'
 
       # connectingLines$selected[connectingLines$property == highlightProperty] = 1
-
-
-    } else if(clickEvent[,'curveNumber'] == 0){
-      centerPoints$selected = 0.3 # set a low default transparency
-      peripheralPoints$selected = 0.3
-      connectingLines$selected = 0.3
-      highlightIndiv = peripheralPoints[clickEvent[,'pointNumber']+1,]$indivs
-      peripheralPoints$selected[peripheralPoints$indivs == highlightIndiv] = 1
-      peripheralPoints$color[peripheralPoints$indivs == highlightIndiv] = 'firebrick4'
     }
-
   } else{
     centerPoints$selected = 1
     connectingLines$selected = 1
@@ -102,7 +101,10 @@ plot_covstatis_plotly = function(fi,fis,fi.groups=NULL,fis.groups=NULL,axes=c(1,
   }
 
 
-  p = ggplot(data = NULL, aes(x = x, y = y, text = paste(property,indivs,sep = '\n'))) +
+  p = ggplot(data = NULL, aes(x = x, y = y, text = paste(property,
+                                                         indivs,
+                                                         paste('X:', round(x,2),'Y:', round(y,2)),
+                                                         sep = '\n'),)) +
     geom_point(data = peripheralPoints,color = peripheralPoints$color,alpha = peripheralPoints$selected) +
     geom_segment(data = connectingLines, aes(x = x, y = y ,yend = yend, xend = xend),linetype = 4,alpha = connectingLines$selected) +
     geom_point(data = centerPoints, color = centerPoints$color, alpha = centerPoints$selected, size=2) +
