@@ -1,5 +1,5 @@
 library(shiny)
-library(covstatis)
+library(CovSTATIS)
 library(magrittr)
 library(GSVD)
 library(ggplot2)
